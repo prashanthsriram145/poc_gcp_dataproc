@@ -1,0 +1,3 @@
+[{"ID":1,"ATTR1":"ABC"},
+{"ID":2,"ATTR1":"DEF"},
+{"ID":3,"ATTR1":"GHI"}]

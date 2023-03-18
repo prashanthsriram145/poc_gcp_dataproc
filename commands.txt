@@ -1,0 +1,22 @@
+TO CREATE A DATAPROC CLUSTER:
+
+gcloud dataproc clusters create spikey-cluster-one --region us-central1 --zone us-central1-f \
+--master-machine-type n2-standard-2 --master-boot-disk-size 30 --num-workers 2 --worker-machine-type n2-standard-2 \
+--worker-boot-disk-size 30 --image-version 2.0-debian10 --project spikey-developers-377712 \
+--initialization-actions gs://goog-dataproc-initialization-actions-us-central1/connectors/connectors.sh \
+    --metadata bigquery-connector-version=1.2.0 \
+    --metadata spark-bigquery-connector-version=0.21.0
+
+TO SUBMIT PYSPARK JOB TO DATAPROC CLUSTER:
+THIS JOB READS DATA FROM BIGQUERY, PERFORMS AGGREGATION AND WRITES BACK TO BIGQUERY
+
+gcloud dataproc jobs submit pyspark gs://spk-spikey-df-store/scripts/read_from_cloud_storage.py \
+    --cluster=spikey-cluster-one \
+--project spikey-developers-377712 --region us-central1 \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest.jar
+
+gcloud dataproc jobs submit pyspark gs://spk-spikey-df-store/scripts/read_from_cloud_storage_write_to_bigquery.py \
+    --cluster=spikey-cluster-one \
+--project spikey-developers-377712 --region us-central1 \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest.jar
+
